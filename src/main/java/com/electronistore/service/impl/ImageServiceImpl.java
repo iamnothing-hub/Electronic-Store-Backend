@@ -1,5 +1,6 @@
-package com.electronistore.service;
+package com.electronistore.service.impl;
 
+import com.electronistore.service.ImageService;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,13 @@ public class ImageServiceImpl implements ImageService {
         assert originalFilename != null;
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileWithExtension = randomFileName + extension;
-        String fullPathWithFilename = path + File.separator + fileWithExtension;
+        String fullPathWithFilename = path + /* File.separator */   fileWithExtension;
 
-
+        logger.info("Full Image Name {}: ", fullPathWithFilename);
+        // Full Image Name images/users/\c206e37a-c59e-4e30-9ea5-7bd4d482f3ea.PNG:
         if (extension.equalsIgnoreCase(".png") || extension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg")){
-
+            logger.info("Extension name {}: ",extension);
+            // Extension name .PNG:
             //File save
             File folder = new File(path);
 
@@ -40,11 +43,11 @@ public class ImageServiceImpl implements ImageService {
                 folder.mkdirs();
             }
             // upload
-            Files.copy(file.getInputStream(), Paths.get(fileWithExtension));
+            Files.copy(file.getInputStream(), Paths.get(fullPathWithFilename));
             return fileWithExtension;
         }
         else{
-            throw new BadRequestException("File with this "+ extension + "not allowed");
+            throw new BadRequestException("File with this "+ extension + " not allowed");
         }
 
     }

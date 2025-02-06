@@ -1,36 +1,58 @@
-package com.electronistore.service;
+package com.electronistore.service.impl;
 
 import com.electronistore.dto.PageableResponse;
 import com.electronistore.dto.UserDto;
+import com.electronistore.entity.Role;
 import com.electronistore.entity.User;
 import com.electronistore.exception.ResourceNotFoundException;
 import com.electronistore.helper.PageHelper;
+import com.electronistore.repository.RoleRepository;
 import com.electronistore.repository.UserRepository;
-import lombok.experimental.Helper;
+import com.electronistore.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private static Integer count = 10000;
     @Autowired
     private UserRepository userRepository;
 
+
 //    Model mapper is coming from config.
     @Autowired
     private ModelMapper mapper;
 
+    // User ka image path ka instance lenge aur value application.properties mein se aayega
+    @Value("${user.profile.image.path}")
+    private String imagePath;
+
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -41,6 +63,19 @@ public class UserServiceImpl implements UserService{
         userDto.setUserId("ELC"+ ++count);
 
         User user = prepareEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        /**
+         * Pahle ham role get karenge agar role mil gya to thik otherwise ham ek by default NORMAL role banayenge
+         *
+         */
+        Role role = new Role();
+        role.setRoleId(UUID.randomUUID().toString());
+        role.setRoleName("ROLE_NORMAL");
+
+        Role roleNormal = roleRepository.findByRoleName("ROLE_NORMAL").orElse(role);
+        // Set role to the user
+        user.setRoles(List.of(roleNormal));
         User savedUser = userRepository.save(user);
 
         UserDto newUserDto = prepareDto(savedUser);
@@ -57,7 +92,19 @@ public class UserServiceImpl implements UserService{
         user.setGender(userDto.getGender());
         user.setImageName(userDto.getImageName());
         user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
+
+        /**
+         * @return case 1: Agar user password update nahi karna chahta hai
+         *                 tab old password ko userRepo se fetch karke update kar denge
+         *
+         * @return case 2: Agar user password ko update karna chahta hai tab use encrypt karke add kara denge
+         */
+
+//        if (!userDto.getPassword().equalsIgnoreCase(user.getPassword()))
+//            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        if(userDto.getPassword().isEmpty()) user.setPassword(user.getPassword());
+        if(userDto.getPassword() != null && !userDto.getPassword().isEmpty()) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        else user.setPassword(user.getPassword());
 
         User updatedUser = userRepository.save(user);
 
@@ -68,6 +115,25 @@ public class UserServiceImpl implements UserService{
     public void deleteUser(String userId) {
 
         User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User Not Found!!"));
+
+        // user ko delete karate time userImage ko bhi delete karna hoga
+
+        String fullPath = imagePath + user.getImageName();
+
+        // Ye path folder  mein se image ko remove karega
+        try {
+            Path path = Paths.get(fullPath);
+
+            Files.delete(path);
+        }
+        catch (NoSuchFileException ex){
+            logger.info("No image is found in folder!!");
+            ex.printStackTrace();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
         userRepository.delete(user);
     }
 

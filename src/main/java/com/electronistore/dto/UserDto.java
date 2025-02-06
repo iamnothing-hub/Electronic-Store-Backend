@@ -4,6 +4,8 @@ import com.electronistore.validate.ImageNameValidate;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,8 +24,9 @@ public class UserDto {
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.][a-zA-Z]{2,}$", message = "Email is not correct")
     private String email;
 
-    @NotBlank(message = "Password is not empty.")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()])[A-Za-z\\d!@#$%^&*()]{8,}$", message = "Password pattern not correct")
+  //  @NotBlank(message = "Password is required!")
+  //  @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()])[A-Za-z\\d!@#$%^&*()]{4,}$", message = "Password pattern not correct")
+  @Size(min = 4, message = "Password must be at least 6 characters")
     private String password;
 
     @NotNull(message = "Gender is Required")
@@ -36,4 +39,6 @@ public class UserDto {
     //? Custom Bean Validation
     @ImageNameValidate
     private String imageName;
+
+    private List<RoleDto> roles;
 }

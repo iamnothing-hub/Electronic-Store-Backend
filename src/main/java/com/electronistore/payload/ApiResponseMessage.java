@@ -1,4 +1,4 @@
-package com.electronistore.dto;
+package com.electronistore.payload;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

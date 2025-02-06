@@ -9,16 +9,16 @@ import java.util.ArrayList;
 public interface CategoryService {
 
 //    Create
-    CategoryDto create(CategoryDto categoryDto);
+    CategoryDto createCategory(CategoryDto categoryDto);
 
 //    update
-    CategoryDto update(CategoryDto categoryDto, String id);
+    CategoryDto updateCategory(CategoryDto categoryDto, String id);
 //    delete
-    void delete(String id);
+    void deleteCategory(String id);
 //    get all
-    PageableResponse<CategoryDto> getAll(int pageNumber, int pageSize, String sortBy, String sortDir);
+    PageableResponse<CategoryDto> getAllCategories(int pageNumber, int pageSize, String sortBy, String sortDir);
 //    get single
-    CategoryDto getSingle(String id);
+    CategoryDto getSingleCategory(String id);
 //    search
-    ArrayList<CategoryDto> search(String key);
+    ArrayList<CategoryDto> searchCategory(String key);
 }

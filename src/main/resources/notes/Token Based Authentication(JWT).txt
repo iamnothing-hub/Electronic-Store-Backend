@@ -1,0 +1,38 @@
+todo: Token Base Authentication
+->  Token is plain string that can information and get generated when user authenticated first time.
+->  Whenever client want to access protected API then client need to send token with request.
+->  Stateless in nature
+->  JWT is mostly used token in industry
+->  We are already using tokens - JSESSIONID
+
+
+
+todo: JWT - Json Web Token means Json format
+->  JSON format
+->  Designed for Web request
+->  Store user information no need to store data on server
+->  JWT has three parts
+                1. Header
+                2. Payload
+                3. Signature (optional) -> It has secret key
+                [1. Red][2. Blue][3. Green]
+                [dnsacieurwh23xnwui13333] [ncuierh44444555555555555559nfevbeiu32refd] [c njkavbieuc]
+
+       -> Header - It tells about token length and token type like JWT
+       -> Payload - It will take user information
+       -> Signature - It is collection of Header +"."+ Payload, + Secret Key
+                Ye batata hai ki token mein kucch changes hai ya nhi agar hai to automatic logout ho jayega
+                agar change nhi hai to user logged in rahega
+
+
+
+todo: JWT work flow -> Please refer pictures
+
+
+
+
+
+
+
+
+
