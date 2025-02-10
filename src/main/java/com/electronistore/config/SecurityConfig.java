@@ -3,10 +3,14 @@ package com.electronistore.config;
 
 import com.electronistore.security.JWTAuthenticationEntryPoint;
 import com.electronistore.security.JWTAuthenticationFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 
 /**
@@ -47,19 +55,52 @@ public class SecurityConfig {
          * CORS concept
          * csrf concept
          */
-        httpSecurity.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable());
-        httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+//        httpSecurity.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable());
+//        httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+
+        httpSecurity.cors(httpSecurityCorsConfigurer ->
+                httpSecurityCorsConfigurer.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+                        //origins
+                        //methods
+                        // Isase kewal ek origin access hoga
+//                        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+
+                        // Suppose I want to access more than one origin like 3000, 3100 etc.
+                        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:3100"));
+                        // Suppose I want to give access for all origin so that we use *
+                     //   corsConfiguration.setAllowedOrigins(List.of("*"));  // Not recommanded in Production
+
+                        // For Methods
+//                        corsConfiguration.setAllowedMethods(List.of("*"));  //isko use karenge to credentials ko false karna padega
+                        corsConfiguration.setAllowedOriginPatterns(List.of("*"));// this is better than upper code
+                        // For Credentials
+                        corsConfiguration.setAllowCredentials(true);
+
+                        // For Headers
+                        corsConfiguration.setAllowedHeaders(List.of("*"));
+
+                        // For MaxAge means Cleint data ko kitne time tak cache memory mein rakh sakta hai
+                        // Ye second mein value leti hai
+                        corsConfiguration.setMaxAge(3000L);
+                        return corsConfiguration;
+                    }
+                })
+                );
 
 
         httpSecurity.authorizeHttpRequests(request ->{
 
-            request.requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN","NORMAL")
+            request.requestMatchers(HttpMethod.GET,"/users").hasRole(AppConstants.ROLE_ADMIN)
+                    .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(AppConstants.ROLE_ADMIN)
+                    .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole(AppConstants.ROLE_ADMIN,AppConstants.ROLE_NORMAL)
                     .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                    .requestMatchers("/products/**").hasRole("ADMIN")
+                    .requestMatchers("/products/**").hasRole(AppConstants.ROLE_ADMIN)
                     .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                    .requestMatchers("/categories/**").hasRole("ADMIN")
+                    .requestMatchers("/categories/**").hasRole(AppConstants.ROLE_ADMIN)
                     .requestMatchers(HttpMethod.POST, "/auth/generate-token").permitAll()
                     .requestMatchers("/auth/**").authenticated()
                     .anyRequest().permitAll()
@@ -82,5 +123,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+    //AuthenticationManager k liye ek bean banayenge
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
+        return  builder.getAuthenticationManager();
+    }
 
 }

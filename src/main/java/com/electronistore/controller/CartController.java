@@ -1,6 +1,7 @@
 package com.electronistore.controller;
 
 
+import com.electronistore.config.AppConstants;
 import com.electronistore.dto.AddItemToCartRequest;
 import com.electronistore.dto.CartDto;
 import com.electronistore.payload.ApiResponseMessage;
@@ -27,7 +28,7 @@ public class CartController {
     }
 
     // Remove items from cart
-    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
+    @PreAuthorize("hasAnyRole('"+ AppConstants.ROLE_ADMIN+"','"+ AppConstants.ROLE_NORMAL+"')")
     @DeleteMapping("/{userId}/cart/{cartItem}")
     public ResponseEntity<ApiResponseMessage> removeItemFromCart(@PathVariable String userId, @PathVariable int cartItem){
         cartService.removeItemFromCart(userId,cartItem);
@@ -40,7 +41,7 @@ public class CartController {
     }
 
     // Remove all items from cart
-    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
+    @PreAuthorize("hasAnyRole('"+ AppConstants.ROLE_ADMIN+"','"+AppConstants.ROLE_NORMAL+"')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponseMessage> clearCart(@PathVariable String userId){
         cartService.clearCart(userId);
@@ -53,7 +54,7 @@ public class CartController {
     }
 
     // Get Item
-    @PreAuthorize("hasAnyRole('ADMIN','NORMAL')")
+    @PreAuthorize("hasAnyRole('"+ AppConstants.ROLE_ADMIN+"','"+AppConstants.ROLE_NORMAL+"')")
     @GetMapping("/{userId}")
     public ResponseEntity<CartDto> getCart( @PathVariable String userId){
         CartDto cart = cartService.getCartByUser(userId);

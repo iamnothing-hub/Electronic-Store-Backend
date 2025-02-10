@@ -1,0 +1,23 @@
+CORS - Cross Site Request Sharing
+
+1. It is security feature implemented in web browsers that allows or restricts web applications running at one origin(domain)
+   from requesting resources from a different origin
+2. This mechanism is necessary because of the same-origin-policy(SOP) that web browsers enforce, which restricts how resources
+   can be shared across different origins to prevent malicious behaviour, such as cross-site scripting(XSS) attacks.
+
+
+
+How CORS Works
+1. Cross-Origin Request: Imagine a scenario where a web page on example1.com has javascript code that tries to fetch
+   data from an API on example2.com. THis is a cross-origin request.
+
+2. Preflight Request (For certain methods): For some HTTP methods like PUT, DELETE etc. browsers send a preflight
+   request using the OPTIONS method before the actual request. THis preflight request ask the server at example2.com
+   if the upcoming request from example1.com is allowed.
+
+3. CORS Headers: The server responds to the preflight request( or the original request for similar methods) with
+   specific CORS headers. These headers indicate whether the request from example1.com is authorized and under what
+   conditions (like allowed origins, methods, headers etc.)
+
+4. Access Granted.Denied: Based on the CORS headers, the browser either allows the actual request to proceed or
+   blocks it for security reasons.

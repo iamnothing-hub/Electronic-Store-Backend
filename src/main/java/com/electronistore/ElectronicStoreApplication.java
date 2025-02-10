@@ -1,5 +1,6 @@
 package com.electronistore;
 
+import com.electronistore.config.AppConstants;
 import com.electronistore.entity.Role;
 import com.electronistore.entity.User;
 import com.electronistore.repository.RoleRepository;
@@ -32,19 +33,19 @@ public class ElectronicStoreApplication  implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Role roleAdmin = roleRepository.findByRoleName("ROLE_ADMIN").orElse(null);
-		Role roleNormal = roleRepository.findByRoleName("ROLE_NORMAL").orElse(null);
+		Role roleAdmin = roleRepository.findByRoleName(AppConstants.ROLE_ADMIN).orElse(null);
+		Role roleNormal = roleRepository.findByRoleName(AppConstants.ROLE_NORMAL).orElse(null);
 
 		if(roleAdmin==null){
 			roleAdmin = new Role();
 			roleAdmin.setRoleId(UUID.randomUUID().toString());
-			roleAdmin.setRoleName("ROLE_ADMIN");
+			roleAdmin.setRoleName(AppConstants.ROLE_ADMIN);
 			roleRepository.save(roleAdmin);
 		}
 		if(roleNormal==null){
 			roleNormal = new Role();
 			roleNormal.setRoleId(UUID.randomUUID().toString());
-			roleNormal.setRoleName("ROLE_NORMAL");
+			roleNormal.setRoleName(AppConstants.ROLE_NORMAL);
 			roleRepository.save(roleNormal);
 		}
 

@@ -1,5 +1,6 @@
 package com.electronistore.controller;
 
+import com.electronistore.config.AppConstants;
 import com.electronistore.dto.CreateOrderRequest;
 import com.electronistore.dto.OrderDto;
 import com.electronistore.dto.PageableResponse;
@@ -21,7 +22,7 @@ public class OrderController {
     private OrderService orderService;
 
     // Create Order
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+    @PreAuthorize("hasAnyRole('"+ AppConstants.ROLE_ADMIN+"','"+ AppConstants.ROLE_NORMAL+"')")
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderRequest orderDto){
         OrderDto order = orderService.createOrder(orderDto);
@@ -29,7 +30,7 @@ public class OrderController {
     }
 
     //Remove Order
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('"+ AppConstants.ROLE_ADMIN+"')")
     @DeleteMapping("/{orderId}")
     public ResponseEntity<ApiResponseMessage> removeOrder(@PathVariable String orderId){
         orderService.removeOrder(orderId);
@@ -38,7 +39,7 @@ public class OrderController {
     }
 
     //Get orders of user
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+    @PreAuthorize("hasAnyRole('"+ AppConstants.ROLE_ADMIN+"','"+ AppConstants.ROLE_NORMAL+"')")
     @GetMapping("/users/{userId}")
     public ResponseEntity<List<OrderDto>> getOrderOfUser(@PathVariable String userId){
         List<OrderDto> orders = orderService.getOrderOfUser(userId);
@@ -47,7 +48,7 @@ public class OrderController {
     }
 
     //Get orders
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('"+ AppConstants.ROLE_ADMIN+"')")
     @GetMapping
     public ResponseEntity<PageableResponse<OrderDto>> getOrders(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,

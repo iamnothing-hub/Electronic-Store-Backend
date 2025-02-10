@@ -4,6 +4,8 @@ package com.electronistore.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -37,8 +39,11 @@ public class JwtHelper {
     // We took 30 minutes
     public static final long TOKEN_VALIDITY = 30 * 60 * 1000;
 
+
     public static final String SECRET_KEY = "asdfnjdkshuwiesvjbwstiouqeffie4w8349jefsbviq29roidfviu3h938rubjfkjsdbh";
 
+//    @Value("${asdfnjdkshuwiesvjbwstiouqeffie4w8349jefsbviq29roidfviu3h938rubjfkjsdbh}")
+//    private   String SECRET_KEY;
     // Retrive username and jwt token
     public String getUsernameFromToken(String token){
         return getClaimFromToken(token, Claims::getSubject);
