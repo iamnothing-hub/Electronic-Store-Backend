@@ -1,0 +1,30 @@
+CSRF - Cross-Site Request Forgery
+
+1. It is a web security vulnerability that attackers can exploit to trick authenticated users into performing
+   unintended actions on a web applications.
+2. Spring Security offers built-in mechanisms to protect against CSRF attackers.
+
+
+**********************************************************************************************************************
+
+How Spring Security use protection against CSRF Attack
+1. Spring generates a unique random CSRF token for each user session.
+2. The CSRF token is included int the HTML form on the application's web pages.
+3. When the user submits the form, the browser sends the CSRF token with the form data in the HTTP request.
+4. Spring Security validates the CSRF token in the request against the one stored in the session. If they match,
+   the request is processed normally. Otherwise, the request is rejected.
+
+
+************************************************************************************************************************
+Implementing CSRF token in jwt based applications
+1. Implementing CSRF protection with JWT in spring boot requires a slightly different approach compared to session-based
+   authentication.
+2. Stateless nature of JWT: JWT tokens themselves don't store session information on the server-side. They are
+   self-contained and rely on cryptographic signatures for verification.
+
+3. There are two approaches to achieve CSRF protection with JWT:
+    1. Disable CSRF protection for JWT API's: This is suitable if your springboot applications backend entirely relies
+       on JWT for authentication and doesn't use session cookies. Since there's no session involved.
+       CSRF attacks wouldn't be applicable. You can disable CSRF protection using Spring Security configurations.
+
+    2. Use a custom CSRF token with JWT: This approach involves managing s separate CSRF token alongside JWT.

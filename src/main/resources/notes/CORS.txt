@@ -21,3 +21,5 @@ How CORS Works
 
 4. Access Granted.Denied: Based on the CORS headers, the browser either allows the actual request to proceed or
    blocks it for security reasons.
+
+

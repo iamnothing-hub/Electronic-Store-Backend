@@ -90,6 +90,7 @@ public class SecurityConfig {
                     }
                 })
                 );
+        httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 
 
         httpSecurity.authorizeHttpRequests(request ->{
