@@ -1,0 +1,10 @@
+SignIn With Google
+1. Login with similar JWT Token
+2. Use Google Identity
+    We use google Identity -> For this search Google Identity in browser
+                              -> Authentication -> Sign in with Google for web in 1 Tap
+
+
+
+Browse Google developer Console and login
+Create a Project and name less than 30 chars

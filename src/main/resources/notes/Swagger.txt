@@ -1,0 +1,9 @@
+******************************* Swagger ****************************
+-> Swagger is used to write documentation for API, and also it will test the API.
+-> Swagger  (Now the "Open API Initiative") is a specification and framework for describing REST APIs using
+   a common language that everyone can understand.
+-> The implementation of Swagger is Spring-fox
+-> This will give information in JSON format and Swagger UI which is based on web.
+-> springfox-boot starter is dependency of swagger
+-> @EnableWebMvc use in Main class
+-> /swagger-ui/index.html

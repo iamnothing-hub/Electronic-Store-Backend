@@ -57,6 +57,9 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<>();
 
+
+    private Providers providers = Providers.SELF;
+
     /**
      *
      * @return These all are the UserDetails Interface methods

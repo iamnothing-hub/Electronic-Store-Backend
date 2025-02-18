@@ -6,6 +6,7 @@ import com.electronistore.dto.ProductDto;
 import com.electronistore.payload.ImageResponse;
 import com.electronistore.service.ImageService;
 import com.electronistore.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/products")
 //@CrossOrigin(origins = "http://localhost:3000")
+@Tag(name="Product Controller", description = "REST APIs for Product Controller Operations")
 public class ProductController {
 
     @Autowired

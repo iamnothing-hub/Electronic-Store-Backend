@@ -1,7 +1,9 @@
 package com.electronistore.service.impl;
 
+import com.electronistore.config.AppConstants;
 import com.electronistore.dto.PageableResponse;
 import com.electronistore.dto.UserDto;
+import com.electronistore.entity.Providers;
 import com.electronistore.entity.Role;
 import com.electronistore.entity.User;
 import com.electronistore.exception.ResourceNotFoundException;
@@ -71,9 +73,9 @@ public class UserServiceImpl implements UserService {
          */
         Role role = new Role();
         role.setRoleId(UUID.randomUUID().toString());
-        role.setRoleName("ROLE_NORMAL");
+        role.setRoleName(AppConstants.ROLE_NORMAL);
 
-        Role roleNormal = roleRepository.findByRoleName("ROLE_NORMAL").orElse(role);
+        Role roleNormal = roleRepository.findByRoleName(AppConstants.ROLE_NORMAL).orElse(role);
         // Set role to the user
         user.setRoles(List.of(roleNormal));
         User savedUser = userRepository.save(user);

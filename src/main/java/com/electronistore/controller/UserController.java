@@ -7,6 +7,10 @@ import com.electronistore.dto.UserDto;
 import com.electronistore.payload.ImageResponse;
 import com.electronistore.service.ImageService;
 import com.electronistore.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -29,7 +33,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User Controller", description = "REST APIs for User Operations")  //-> THis will come from Swagger
 public class UserController {
+
 
     @Autowired
     private UserService userService;
@@ -43,6 +49,12 @@ public class UserController {
     private String uploadImagePath;
 
 //    Create
+    @Operation(summary = "Create User", description = "Add user in the database by this method ") //-> This will come from Swagger
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success | OK"),
+            @ApiResponse(responseCode = "201", description = "New User Created!!"),
+            @ApiResponse(responseCode = "401", description = "Not Authorized!!")
+    })   //-> THis will come from swagger
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto){
         UserDto dto = userService.createUser(userDto);

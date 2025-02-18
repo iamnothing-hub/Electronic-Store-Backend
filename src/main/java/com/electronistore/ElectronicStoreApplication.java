@@ -10,11 +10,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
+//@EnableSwagger2
+//@EnableWebMvc // No need to add this annotation in spring boot 3+ version, also no need to code for Swagger configuration
 public class ElectronicStoreApplication  implements CommandLineRunner {
 
 	@Autowired

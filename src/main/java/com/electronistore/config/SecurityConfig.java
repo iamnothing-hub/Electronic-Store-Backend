@@ -46,9 +46,19 @@ public class SecurityConfig {
     private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 
+    // THis is swagger urls
+    private final String[] PUBLIC_URLs = {
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-resources/**",
+            "/v3/api-docs/**",
+    };
+
     // SecurityFilterChain beans,   HttpSecurity will give Xml file
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+
 
         /**
          * Configuring URLs
@@ -70,13 +80,15 @@ public class SecurityConfig {
 //                        corsConfiguration.addAllowedOrigin("http://localhost:3000");
 
                         // Suppose I want to access more than one origin like 3000, 3100 etc.
-                        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:3100"));
+                        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:3100","http://localhost:4200"));
                         // Suppose I want to give access for all origin so that we use *
                      //   corsConfiguration.setAllowedOrigins(List.of("*"));  // Not recommanded in Production
 
                         // For Methods
 //                        corsConfiguration.setAllowedMethods(List.of("*"));  //isko use karenge to credentials ko false karna padega
                         corsConfiguration.setAllowedOriginPatterns(List.of("*"));// this is better than upper code
+                        // Method lagana jaruri hai otherwise give error of CORS not allowed to pass the data
+                        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                         // For Credentials
                         corsConfiguration.setAllowCredentials(true);
 
@@ -95,15 +107,17 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(request ->{
 
-            request.requestMatchers(HttpMethod.GET,"/users").hasRole(AppConstants.ROLE_ADMIN)
+            request.requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(AppConstants.ROLE_ADMIN)
+                    .requestMatchers(PUBLIC_URLs).permitAll()   //-> THis is swagger endpoints
                     .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole(AppConstants.ROLE_ADMIN,AppConstants.ROLE_NORMAL)
                     .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                     .requestMatchers("/products/**").hasRole(AppConstants.ROLE_ADMIN)
                     .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                     .requestMatchers("/categories/**").hasRole(AppConstants.ROLE_ADMIN)
-                    .requestMatchers(HttpMethod.POST, "/auth/generate-token").permitAll()
-                    .requestMatchers("/auth/**").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/auth/generate-token","/auth/login-with-google").permitAll()
+//                    .requestMatchers(HttpMethod.POST, "/auth/login-with-google").permitAll()
+                    .requestMatchers("/auth/**").permitAll()
                     .anyRequest().permitAll()
                     ;
 
