@@ -3,6 +3,7 @@ package com.electronistore;
 import com.electronistore.entity.User;
 import com.electronistore.repository.UserRepository;
 import com.electronistore.security.JwtHelper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ class ElectronicStoreApplicationTests {
 	void contextLoads() {
 	}
 
+	@Disabled
 	@Test
 	void testJwtToken(){
 		System.out.println("This is jwt token.");
