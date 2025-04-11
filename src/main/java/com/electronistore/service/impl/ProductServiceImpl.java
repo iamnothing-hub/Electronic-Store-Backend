@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 @Transactional
 @Service("productServiceImpl")
@@ -38,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto createProduct(ProductDto productDto) {
         String productId = UUID.randomUUID().toString();
         productDto.setProductId(productId);
-        productDto.setAddedDate(LocalDate.now());
+        productDto.setAddedDate(new Date());
         Product product = productRepository.save(mapper.map(productDto, Product.class));
         return mapper.map(product,ProductDto.class);
     }
@@ -120,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
 
         String productId = UUID.randomUUID().toString();
         productDto.setProductId(productId);
-        productDto.setAddedDate(LocalDate.now());
+        productDto.setAddedDate(new Date());
         productDto.setCategory(mapper.map(category, CategoryDto.class));
         Product product = productRepository.save(mapper.map(productDto, Product.class));
         return mapper.map(product,ProductDto.class);

@@ -43,7 +43,7 @@ public class UserController {
     @Autowired
     private ImageService imageService;
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Value("${user.profile.image.path}")
     private String uploadImagePath;
@@ -58,7 +58,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto){
         UserDto dto = userService.createUser(userDto);
-
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
 
     }

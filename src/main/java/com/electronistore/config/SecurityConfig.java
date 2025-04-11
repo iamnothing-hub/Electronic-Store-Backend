@@ -36,7 +36,7 @@ import java.util.List;
  *
  */
 @Configuration
-@EnableWebSecurity(debug = true)    // for testing purpose
+//@EnableWebSecurity(debug = true)    // for testing purpose
 @EnableMethodSecurity(prePostEnabled = true)  // This is for method level security in controller
 public class SecurityConfig {
 
@@ -107,18 +107,20 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(request ->{
 
-            request.requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(AppConstants.ROLE_ADMIN)
+            request.requestMatchers("/auth/login").permitAll()
                     .requestMatchers(PUBLIC_URLs).permitAll()   //-> THis is swagger endpoints
-                    .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole(AppConstants.ROLE_ADMIN,AppConstants.ROLE_NORMAL)
+                    .requestMatchers(HttpMethod.GET,"/users").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/users/**").permitAll()/*hasRole(AppConstants.ROLE_ADMIN)*/
+                    .requestMatchers(HttpMethod.GET).permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/users/**").permitAll()/*hasAnyRole(AppConstants.ROLE_ADMIN,AppConstants.ROLE_NORMAL)*/
                     .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                    .requestMatchers("/products/**").hasRole(AppConstants.ROLE_ADMIN)
+                    .requestMatchers("/products/**").permitAll()/*hasRole(AppConstants.ROLE_ADMIN)*/
                     .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                    .requestMatchers("/categories/**").hasRole(AppConstants.ROLE_ADMIN)
+                    .requestMatchers("/categories/**").permitAll()/*hasRole(AppConstants.ROLE_ADMIN)*/
                     .requestMatchers(HttpMethod.POST, "/auth/generate-token","/auth/login-with-google").permitAll()
 //                    .requestMatchers(HttpMethod.POST, "/auth/login-with-google").permitAll()
-                    .requestMatchers("/auth/**").permitAll()
-                    .anyRequest().permitAll()
+                    .anyRequest().permitAll()/*authenticated()*/
                     ;
 
         });

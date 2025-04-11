@@ -41,7 +41,7 @@ import java.util.List;
  * todo: Step 7:
  *              Create login api to accept username and password and return token if username and password is correct
  * */
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:3700")
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Auth Controller", description = "REST APIs for Auth Controller Operations")
@@ -66,15 +66,15 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @PostMapping("/generate-token")
+    @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request){
 
-        logger.info("Username {}, Password {} ", request.getUsername(), request.getPassword());
+        logger.info("Username {}, Password {} ", request.getEmail(), request.getPassword());
 
         // ab ham username aur password ko database se authenticate karte hain using authenticationProvider
-        this.doAuthentication(request.getUsername(),request.getPassword());
+        this.doAuthentication(request.getEmail(),request.getPassword());
         // generate token...
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = jwtHelper.generateToken(userDetails);
         // send response...
         JwtResponse jwtResponse = JwtResponse.builder().token(token).userDto(mapper.map(userDetails, UserDto.class)).build();

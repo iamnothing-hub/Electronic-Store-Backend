@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
 
-    @Bean
+/*    @Bean
     public OpenAPI customOpenApi(){
         return new OpenAPI()
                 .addSecurityItem(new SecurityRequirement().addList("JWT"))
@@ -42,7 +42,7 @@ public class SwaggerConfig {
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")));
-    }
+    }*/
 
     @Bean
     public GroupedOpenApi userApi(){

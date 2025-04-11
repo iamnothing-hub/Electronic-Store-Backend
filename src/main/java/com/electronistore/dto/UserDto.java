@@ -46,7 +46,7 @@ public class UserDto {
     private String about;
 
     //? Custom Bean Validation
-    @ImageNameValidate
+//    @ImageNameValidate
     private String imageName;
 
     private List<RoleDto> roles;

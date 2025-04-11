@@ -15,11 +15,11 @@ public class ImageNameValidator implements ConstraintValidator<ImageNameValidate
 
         logger.info("Message from isValid : {} " + s);
         //Logic
-//        if(s.isBlank()){
-//            return false;
-//        }
-//        else return  true;
-        return !s.isBlank();
+        if(s==null || s.isEmpty()){
+            return false;
+        }
+        else return  true;
+//        return !s.isBlank();
 
 
     }

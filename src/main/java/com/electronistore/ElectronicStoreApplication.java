@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @SpringBootApplication
 //@EnableSwagger2
-//@EnableWebMvc // No need to add this annotation in spring boot 3+ version, also no need to code for Swagger configuration
+//@EnableWebMvc //todo: No need to add this annotation in spring boot 3+ version, also no need to code for Swagger configuration
 public class ElectronicStoreApplication  implements CommandLineRunner {
 
 	@Autowired
@@ -55,15 +55,15 @@ public class ElectronicStoreApplication  implements CommandLineRunner {
 		}
 
 		// Ham ek ADMIN user banayenge
-		User user = userRepository.findByEmail("amit@gmail.com").orElse(null);
+		User user = userRepository.findByEmail("amitkumar@gmail.com").orElse(null);
 		if(user == null){
 			user = new User();
 			user.setUserId(UUID.randomUUID().toString());
 			user.setName("Amit");
 			user.setPassword(passwordEncoder.encode("Amit@1234"));
 			user.setGender("MALE");
-			user.setEmail("amit@gmail.com");
-			user.setRoles(List.of(roleAdmin));
+			user.setEmail("amitkumar@gmail.com");
+			user.setRoles(List.of(roleAdmin,roleNormal));
 
 			userRepository.save(user);
 		}

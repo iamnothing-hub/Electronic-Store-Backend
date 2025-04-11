@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -37,7 +38,7 @@ public class ProductDto {
 
     private Boolean isFreeDelivery;
 
-    private LocalDate addedDate;
+    private Date addedDate;
 
     private int warranty;
 
