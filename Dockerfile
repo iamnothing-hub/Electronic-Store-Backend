@@ -8,4 +8,5 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar electronic-store.jar
-ENTRYPOINT ["java", "-jar", "electronic-store.jar"]
+ENTRYPOINT ["java", "-Xmx256m", "-Xms128m", "-jar", "electronic-store.jar"]
+#ENTRYPOINT ["java", "-jar", "electronic-store.jar"]
